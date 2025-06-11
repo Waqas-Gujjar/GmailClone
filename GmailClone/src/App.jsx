@@ -3,6 +3,7 @@ import Indox from "./components/Indox";
 import { Mail } from "./components/Mail";
 import NavBar from "./components/NavBar/NavBar";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SendMail from "./components/SendMail";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,9 @@ function App() {
     <div className="bg-[#F6F8FC] h-screen w-screen overflow-hidden">
       <NavBar />
       <RouterProvider router={router} />
-      {/* <SideBar /> */}
+      <div className="absolute w-[40%] bottom-0 right-16">
+        <SendMail />
+      </div>
     </div>
   );
 }

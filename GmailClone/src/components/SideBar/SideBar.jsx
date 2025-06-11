@@ -6,6 +6,8 @@ import { RiSendPlane2Line } from "react-icons/ri";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { MdOutlineDrafts } from "react-icons/md";
 import { IoStarOutline } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+import { setOpen } from "../redux/appSlice";
 
 const sideBarItem = [
   {
@@ -35,11 +37,13 @@ const sideBarItem = [
 ];
 
 const SideBar = () => {
+
+   const dispatch = useDispatch();
   return (
     <div className="w-[15%]">
       <div className="p-3">
-        <button className="flex gap-4 items-center hover:shadow-md px-3 py-4 rounded-2xl bg-[#C2E7FF] text-[14px] font-semibold text-[#001D35] cursor-pointer">
-          <LuPencil size={20} />
+        <button onClick={() => dispatch(setOpen(true))} className="flex gap-4 items-center hover:shadow-md px-3 py-4 rounded-2xl bg-[#C2E7FF] text-[14px] font-semibold text-[#001D35] cursor-pointer">
+          <LuPencil size={20} /> 
           <h1>Compose</h1>
         </button>
       </div>
