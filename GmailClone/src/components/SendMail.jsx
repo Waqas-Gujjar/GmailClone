@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import store from "./redux/store";
 import { setOpen } from "./redux/appSlice";
 import { FaCaretDown } from "react-icons/fa";
 import { MdFormatColorText } from "react-icons/md";
@@ -16,8 +15,44 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaMinus } from "react-icons/fa";
 import { MdOutlineOpenInFull } from "react-icons/md";
+import { db } from "../db/fireBase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore"; // ✅ Correct imports
+
 
 const SendMail = () => {
+  const [formData, setFormData] = useState({
+    to: "",
+    subject: "",
+    message: "",
+  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+    await addDoc(collection(db, "emails"), {
+      to: formData.to,
+      subject: formData.subject,
+      message: formData.message,
+      createAt:serverTimestamp()
+    });
+
+
+    dispatch(setOpen(false));
+    setFormData({
+      to: "",
+      subject: "",
+      message: "",
+    });
+  }
+
+
+
   const open = useSelector((store) => store.app.open);
   const dispatch = useDispatch();
 
@@ -38,15 +73,28 @@ const SendMail = () => {
           />
         </div>
       </div>
-      <form action="" className=" flex flex-col p-3 gap-2">
-        <input type="text" placeholder="To" className="outline-none py-1" />
+      <form onSubmit={handleSubmit} className=" flex flex-col p-3 gap-2">
         <input
+          value={formData.to}
+          onChange={handleChange}
+          name="to"
+          type="text"
+          placeholder="To"
+          className="outline-none py-1"
+        />
+        <input
+          value={formData.subject}  
+          onChange={handleChange}
+          name="subject"
           type="text"
           placeholder="Subject"
           className="outline-none py-1"
         />
         <textarea
-          name="Message"
+          value={formData.message}
+          onChange={handleChange}
+          placeholder="Message"
+          name="message"
           cols={30}
           rows={10}
           className="outline-none py-1"

@@ -3,10 +3,10 @@ import { MdCropSquare } from "react-icons/md";
 import { RiStarLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 
-const Message = () => {
+const Message = ({email}) => {
   const navigate  = useNavigate();
   const openMail = () => {
-    navigate("/mail/ht737njnfk")
+    navigate(`/mail/${email.id}`);
   }
 
   return (
@@ -21,13 +21,11 @@ const Message = () => {
       </div>
       <div className="flex-1 ml-4">
         <p className="text-gray-600 truncate inline-block max-w-full">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. At, sunt
-          libero, autem eveniet, repellendus eum consectetur incidunt
-          perspiciatis.
+         {email?.message}
         </p>
       </div>
       <div className="flex-none text-gray-900 text-sm font-semibold">
-        <p>02:50 pm</p>
+        <p>{new Date(email?.createAt?.seconds * 1000).toLocaleString()}</p>
       </div>
     </div>
   );
