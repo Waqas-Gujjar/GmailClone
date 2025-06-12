@@ -12,13 +12,26 @@ import {
 
 import { IoMdArrowBack } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../db/fireBase";
 
 export const Mail = () => {
   const navigate = useNavigate();
+  const params = useParams()
+  const {selectedEmail} = useSelector(store => store.app)
   const back = () => {
     navigate("/");
   };
+  const deleteDocMailById = async (id) => {
+    try {
+       await deleteDoc(doc(db, "emails", id));
+       navigate("/");
+    } catch (error) {
+      console.error("Error deleting email:", error);
+    }
+  }
   return (
     <div className="flex-1 bg-white rounded-xl mx-5">
       <div className="flex items-center justify-between px-4">
@@ -35,7 +48,7 @@ export const Mail = () => {
           <div className="p-2 rounded-full hover:bg-gray-100 cursor-pointer">
             <MdOutlineReport />
           </div>
-          <div className="p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+          <div onClick={() => deleteDocMailById(params.id)} className="p-2 rounded-full hover:bg-gray-100 cursor-pointer">
             <RiDeleteBin6Line />
           </div>
           <div className="p-2 rounded-full text-gray-200 text-xl hover:bg-gray-100 cursor-pointer">
@@ -67,19 +80,19 @@ export const Mail = () => {
       <div className="h-[90vh] overflow-y-auto p-8">
         <div className="flex items-center justify-between bh-white gap-1 ">
           <div className="flex items-center justify-between gap-5">
-            <h1 className="text-2xl  font-medium">Subject</h1>
+            <h1 className="text-2xl  font-medium">{selectedEmail?.subject}</h1>
             <span className="text-sm bg-gray-200  rounded-md px-2">inbox</span>
           </div>
           <div className="flex-none text-gray-400 my-5 text-sm">
-            <p>10-06-25</p>
+            <p>{new Date(selectedEmail?.createAt).toLocaleDateString()}</p>
           </div>
         </div>
         <div className="text-gray-500 text-sm">
-          <h1>wg4941792@gmail.com</h1>
+          <h1>{selectedEmail?.to}</h1>
           <span>to me</span>
         </div>
         <div className="my-10">
-          <p>message</p>
+          <p>{selectedEmail?.message}</p>
         </div>
       </div>
     </div>

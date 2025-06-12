@@ -4,17 +4,25 @@ const appSlice = createSlice({
   name: "app", // Match this with the key in store
   initialState: {
     open: false,
-    email: [],
+    emails: [],
+    selectedEmail: null,
+    searchMail: "",
   },
   reducers: {
     setOpen: (state, action) => {
       state.open = action.payload;
     },
     setEmail: (state, action) => {
-      state.email = action.payload;
+      state.emails = action.payload;
+    },
+    setSelectedEmail: (state, action) => {
+      state.selectedEmail = action.payload;
+    },
+    setSearchMail: (state, action) => {
+      state.searchMail = action.payload;
     },
   },
 });
 
-export const { setOpen, setEmail } = appSlice.actions;
+export const { setOpen, setEmail, setSelectedEmail, setSearchMail } = appSlice.actions;
 export default appSlice.reducer;

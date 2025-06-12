@@ -5,8 +5,18 @@ import { CiCircleQuestion } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TbGridDots } from "react-icons/tb";
 import Avatar from "react-avatar";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setSearchMail } from "../redux/appSlice";
 
 const NavBar = () => {
+  const [input, setinput] = useState("")
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setSearchMail(input))
+  }, [input])
+
+
   return (
     <div className="flex justify-between items-center mx-3 h-16">
       <div className="flex items-center gap-10">
@@ -32,6 +42,8 @@ const NavBar = () => {
             size={"24px"}
           />
           <input
+            value={input}
+            onChange={(e) => setinput(e.target.value)}
             className="rounded-full outline-none px-1 w-full   bg-transparent"
             type="text"
             placeholder="Search mail"
